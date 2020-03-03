@@ -6,7 +6,8 @@ import {
   UPDATE_PRICE,
   GET_ITEMS_IN_CART,
   RETURN_ITEM,
-  PUT_BACK
+  PUT_BACK,
+  CHECKOUT
 } from "./actions";
 import { combineReducers } from "redux";
 
@@ -100,6 +101,12 @@ export function cartReducer(state = [], action) {
             }
           : item;
       });
+
+    case CHECKOUT:
+      return state.map(product => ({
+        ...product,
+        inCart: 0
+      }));
 
     default:
       return state;

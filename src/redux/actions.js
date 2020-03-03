@@ -6,6 +6,11 @@ export const UPDATE_PRICE = "UPDATE_PRICE";
 export const RETURN_ITEM = "RETURN_ITEM";
 export const PUT_BACK = "PUT_BACK";
 export const GET_ITEMS_IN_CART = "GET_ITEMS_IN_CART";
+export const CHECKOUT = "CHECKOUT";
+
+export function checkout() {
+  return { type: CHECKOUT };
+}
 
 export function putBack(id, amount) {
   return { type: PUT_BACK, id, amount };
