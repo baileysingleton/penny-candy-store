@@ -1,42 +1,73 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-import React from "react";
+import { useDispatch } from "react-redux";
+import { addToCart, removeInventory, updatePrice } from "../redux/actions";
+import { useState } from "react";
 
 // so make it like, take in the prop id. Then call the reducer with the prop, so we can reduce on submit.
 
-export default class AddToCart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: 0
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+const AddButton = css`
+  background-color: skyblue;
+  border: 2px solid skyblue;
+  padding: 5px;
+  margin-top: 5px;
+  color: white;
+  font-size: 24px;
+  &:hover {
+    background-color: lightsteelblue;
+    border: 2px solid lightsteelblue;
   }
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-    console.log("hello");
-    console.log(this.props.id);
-  }
-  handleSubmit(event) {
-    console.log("value is: ", this.state.value);
-    console.log("on:");
-  }
+`;
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-        <label>
-          Add To Cart:
-          <input
-            type="text"
-            placeholder="0"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-        </label>
-        <input type="submit" value="Apply" />
-      </form>
-    );
-  }
+const input = css`
+  background-color: skyblue;
+  color: white;
+  outline: none;
+  padding: 5px;
+  font-size: 16px;
+`;
+
+const label = css`
+  font-size: 20px;
+`;
+
+export default function AddToCart(props) {
+  const [value, setValue] = useState(0);
+  const dispatch = useDispatch();
+
+  return (
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        console.log(value);
+        if (value > props.inStock) {
+          alert(
+            `Sorry, but the Penny Candy Store only has ${props.inStock} ${props.name} in stock.`
+          );
+          return false;
+        }
+        dispatch(addToCart(props.id, value));
+        dispatch(removeInventory(props.id, value));
+        dispatch(updatePrice(props.id));
+        setValue(0);
+      }}
+    >
+      <label css={label}>
+        Add To Cart:
+        <input
+          css={input}
+          type="text"
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          disabled={props.inStock > 0 ? false : true}
+        />
+      </label>
+      <input
+        css={AddButton}
+        type="submit"
+        value={props.inStock > 0 ? "Add To Cart" : "Out Of Stock"}
+        disabled={props.inStock > 0 ? false : true}
+      />
+    </form>
+  );
 }

@@ -1,3 +1,7 @@
 export function getProducts(state) {
-  return state;
+  return state.products;
+}
+
+export function getCart(state) {
+  return state.cart;
 }

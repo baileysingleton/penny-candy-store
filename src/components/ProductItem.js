@@ -3,17 +3,21 @@ import { css, jsx } from "@emotion/core";
 import AddToCart from "./AddToCart";
 
 const container = css`
-  border: 1px solid skyblue;
-  margin: 5px;
-  padding: 5px;
+  border: 2px solid skyblue;
+  padding: 40px;
   box-shadow: 5px 2px skyblue;
   display: flex;
-  height: 300px;
+  height: 500px;
   width: 300px;
+  margin: 10px;
   text-align: center;
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
+  &:hover {
+    box-shadow: 5px 2px yellow;
+    border: 2px solid yellow;
+  }
 `;
 
 const title = css`
@@ -21,8 +25,8 @@ const title = css`
 `;
 
 const imageContainer = css`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
 `;
 
@@ -30,8 +34,9 @@ const image = css`
   max-width: 150px;
 `;
 
-const inStock = css``;
-
+const detail = css`
+  font-size: 20px;
+`;
 export function ProductItem(props) {
   let quantity = 0;
   return (
@@ -40,8 +45,9 @@ export function ProductItem(props) {
       <div css={imageContainer}>
         <img css={image} src={props.photoUrl} alt="no picture found" />
       </div>
-      <p css={inStock}>In Stock: {props.inStock}</p>
-      <AddToCart id={props.id} />
+      <p css={detail}>In Stock: {props.inStock}</p>
+      <p css={detail}>Price Per Unit: ${props.price}</p>
+      <AddToCart id={props.id} inStock={props.inStock} name={props.name} />
     </div>
   );
 }
